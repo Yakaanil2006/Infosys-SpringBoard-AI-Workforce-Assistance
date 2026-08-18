@@ -119,28 +119,71 @@ Project Structure
 AI-Workforce-Assistant-Platform/
 │
 ├── backend/
+│   │
 │   ├── app/
+│   │   │
 │   │   ├── core/
+│   │   │   ├── config.py
+│   │   │   ├── database.py
+│   │   │   └── security.py
+│   │   │
 │   │   ├── models/
-│   │   ├── rag/
+│   │   │   ├── user.py
+│   │   │   ├── dataset.py
+│   │   │   ├── recommendation.py
+│   │   │   └── ...
+│   │   │
 │   │   ├── routers/
+│   │   │   ├── auth.py
+│   │   │   ├── datasets.py
+│   │   │   ├── recommendations.py
+│   │   │   └── ...
+│   │   │
 │   │   ├── schemas/
-│   │   └── services/
+│   │   │   ├── auth.py
+│   │   │   ├── dataset.py
+│   │   │   └── ...
+│   │   │
+│   │   ├── services/
+│   │   │   ├── groq_service.py
+│   │   │   ├── recommendation_service.py
+│   │   │   └── ...
+│   │   │
+│   │   ├── rag/
+│   │   │   ├── embeddings.py
+│   │   │   └── ...
+│   │   │
+│   │   └── main.py
 │   │
 │   ├── migrations/
+│   │   └── versions/
+│   │
 │   ├── scripts/
+│   │   └── create_admin.py
+│   │
+│   ├── .env
 │   ├── .env.example
 │   ├── alembic.ini
 │   └── requirements.txt
 │
 ├── frontend/
+│   │
 │   ├── services/
+│   │   └── api.py
+│   │
 │   ├── ui_pages/
 │   │   ├── admin/
+│   │   │   └── ...
+│   │   ├── data_viewer.py
+│   │   ├── recommendations.py
 │   │   └── ...
+│   │
 │   ├── utils/
-│   ├── .env.example
+│   │   └── ...
+│   │
 │   ├── app.py
+│   ├── .env
+│   ├── .env.example
 │   └── requirements.txt
 │
 ├── data/
@@ -151,6 +194,166 @@ AI-Workforce-Assistant-Platform/
 │
 ├── .gitignore
 └── README.md
+
+Backend Structure
+
+backend/
+│
+├── app/
+│   ├── core/
+│   │   ├── config.py
+│   │   ├── database.py
+│   │   └── security.py
+│   │
+│   ├── models/
+│   │   ├── user.py
+│   │   ├── dataset.py
+│   │   └── recommendation.py
+│   │
+│   ├── routers/
+│   │   ├── auth.py
+│   │   ├── datasets.py
+│   │   └── recommendations.py
+│   │
+│   ├── schemas/
+│   │   ├── auth.py
+│   │   └── dataset.py
+│   │
+│   ├── services/
+│   │   ├── groq_service.py
+│   │   └── recommendation_service.py
+│   │
+│   ├── rag/
+│   │   └── embeddings.py
+│   │
+│   └── main.py
+│
+├── migrations/
+├── scripts/
+├── .env
+├── .env.example
+├── alembic.ini
+└── requirements.txt
+
+Frontend Structure
+
+frontend/
+│
+├── services/
+│   └── api.py
+│
+├── ui_pages/
+│   ├── admin/
+│   ├── data_viewer.py
+│   ├── recommendations.py
+│   └── ...
+│
+├── utils/
+│   └── ...
+│
+├── app.py
+├── .env
+├── .env.example
+└── requirements.txt
+
+Database Structure
+
+Neon PostgreSQL
+│
+├── users
+├── datasets
+├── dataset_rows
+├── documents
+├── document_chunks
+├── chat_sessions
+├── chat_messages
+├── recommendations
+├── team_members
+└── powerbi_dashboards
+
+Dataset Flow
+
+Data Viewer
+    │
+    │ Upload CSV
+    ▼
+datasets
+    │
+    ▼
+dataset_rows
+    │
+    ▼
+Recommendations
+    │
+    ▼
+Pandas DataFrame
+    │
+    ▼
+Dataset Analysis
+    │
+    ▼
+Groq
+    │
+    ▼
+recommendations
+
+RAG Flow
+
+Document
+    │
+    ▼
+Text Extraction
+    │
+    ▼
+Chunking
+    │
+    ▼
+Embeddings
+    │
+    ▼
+pgvector
+    │
+    ▼
+Similarity Search
+    │
+    ▼
+Relevant Context
+    │
+    ▼
+Groq
+    │
+    ▼
+Answer
+
+Application Flow
+
+User
+ │
+ ▼
+Streamlit
+ │
+ │ REST + JWT
+ ▼
+FastAPI
+ │
+ ├──────────────► Authentication
+ │
+ ├──────────────► Data Viewer
+ │                    │
+ │                    ▼
+ │              PostgreSQL
+ │
+ ├──────────────► Recommendations
+ │                    │
+ │                    ▼
+ │                   Groq
+ │
+ ├──────────────► RAG
+ │                    │
+ │                    ▼
+ │                 pgvector
+ │
+ └──────────────► Power BI
 
 Clone Repository
 
