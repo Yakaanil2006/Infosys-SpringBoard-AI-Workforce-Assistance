@@ -55,7 +55,14 @@ def admins(
     db: Session = Depends(get_db),
     _: User = Depends(require_admin),
 ):
-    return db.execute(select(User).where(User.role == "admin").order_by(User.created_at.desc())).scalars().all()
+    return db.execute(
+        select(User)
+        .where(
+            User.role == "admin",
+            User.is_active.is_(True),
+        )
+        .order_by(User.created_at.desc())
+    ).scalars().all()
 
 
 @router.delete("/admins/{user_id}")
@@ -65,12 +72,30 @@ def delete_admin(
     current: User = Depends(require_admin),
 ):
     if current.id == user_id:
-        raise HTTPException(status_code=400, detail="You cannot delete your own account")
+        raise HTTPException(
+            status_code=400,
+            detail="You cannot delete your own account",
+        )
 
     user = db.get(User, user_id)
     if not user:
-        raise HTTPException(status_code=404, detail="Admin not found")
+        raise HTTPException(
+            status_code=404,
+            detail="Admin not found",
+        )
 
-    db.delete(user)
+    if user.role != "admin":
+        raise HTTPException(
+            status_code=400,
+            detail="Only administrator accounts can be removed",
+        )
+
+    user.is_active = False
+
     db.commit()
-    return {"message": "Admin deleted"}
+    db.refresh(user)
+
+    return {
+        "message": "Admin deactivated",
+        "id": user.id,
+    }
