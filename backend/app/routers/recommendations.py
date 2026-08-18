@@ -36,8 +36,11 @@ class AskRecommendationRequest(BaseModel):
 
 
 @router.get("/datasets")
-def datasets(_: User = Depends(require_admin)):
-    return available_datasets()
+def datasets(
+    db: Session = Depends(get_db),
+    _: User = Depends(require_admin),
+):
+    return available_datasets(db)
 
 
 @router.post("/analyze")
@@ -47,7 +50,7 @@ def analyze(
     user: User = Depends(require_admin),
 ):
     try:
-        analysis = analyze_dataset(payload.dataset_name)
+        analysis = analyze_dataset(db, payload.dataset_name)
     except Exception as exc:
         raise HTTPException(status_code=400, detail=str(exc))
 

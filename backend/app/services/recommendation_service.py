@@ -2,46 +2,36 @@ from __future__ import annotations
 
 import json
 import re
-from pathlib import Path
 from typing import Any
 
 import numpy as np
 import pandas as pd
 from groq import Groq
+from sqlalchemy import select
+from sqlalchemy.orm import Session
 
 from app.core.config import get_settings
+from app.models.dataset import Dataset, DatasetRow
 from app.models.recommendation import Recommendation
 
 settings = get_settings()
 client = Groq(api_key=settings.groq_api_key)
 
-DATA_DIR = Path(__file__).resolve().parents[3] / "data"
 
+def available_datasets(db: Session) -> list[dict[str, Any]]:
+    datasets = db.scalars(
+        select(Dataset).order_by(Dataset.updated_at.desc())
+    ).all()
 
-def available_datasets() -> list[dict[str, Any]]:
-    datasets = []
-    for path in sorted(DATA_DIR.glob("*.csv")):
-        try:
-            df = pd.read_csv(path)
-            datasets.append(
-                {
-                    "name": path.name,
-                    "rows": int(len(df)),
-                    "columns": int(len(df.columns)),
-                    "column_names": df.columns.tolist(),
-                }
-            )
-        except Exception:
-            continue
-    return datasets
-
-
-def resolve_dataset(filename: str) -> Path:
-    safe_name = Path(filename).name
-    path = DATA_DIR / safe_name
-    if not path.exists() or path.suffix.lower() != ".csv":
-        raise ValueError("Dataset not found. Choose a CSV from the available dataset list.")
-    return path
+    return [
+        {
+            "name": dataset.name,
+            "rows": int(dataset.row_count or 0),
+            "columns": len(dataset.columns or []),
+            "column_names": dataset.columns or [],
+        }
+        for dataset in datasets
+    ]
 
 
 def _clean_scalar(value: Any) -> Any:
@@ -154,10 +144,27 @@ def analyze_dataframe(df: pd.DataFrame, filename: str) -> dict[str, Any]:
     }
 
 
-def analyze_dataset(filename: str) -> dict[str, Any]:
-    path = resolve_dataset(filename)
-    df = pd.read_csv(path)
-    return analyze_dataframe(df, path.name)
+def analyze_dataset(db: Session, dataset_name: str) -> dict[str, Any]:
+    dataset = db.scalar(
+        select(Dataset).where(Dataset.name == dataset_name)
+    )
+
+    if not dataset:
+        raise ValueError("Dataset not found.")
+
+    rows = db.scalars(
+        select(DatasetRow)
+        .where(DatasetRow.dataset_id == dataset.id)
+        .order_by(DatasetRow.row_index)
+    ).all()
+
+    if rows:
+        records = [row.data for row in rows]
+        df = pd.DataFrame(records, columns=dataset.columns or None)
+    else:
+        df = pd.DataFrame(columns=dataset.columns or [])
+
+    return analyze_dataframe(df, dataset.name)
 
 
 def _extract_json(text: str) -> dict[str, Any]:
