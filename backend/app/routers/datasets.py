@@ -115,7 +115,24 @@ def upload_csv(
 
     try:
         contents = file.file.read()
-        df = pd.read_csv(BytesIO(contents))
+
+        encodings = ["utf-8", "utf-8-sig", "cp1252", "latin1"]
+
+        df = None
+        last_error = None
+
+        for encoding in encodings:
+            try:
+                df = pd.read_csv(BytesIO(contents), encoding=encoding)
+                break
+            except UnicodeDecodeError as exc:
+                last_error = exc
+
+        if df is None:
+            raise ValueError(
+                f"Unsupported CSV encoding. Last error: {last_error}"
+            )
+
     except Exception as exc:
         raise HTTPException(status_code=400, detail=f"Could not read CSV: {exc}")
 
