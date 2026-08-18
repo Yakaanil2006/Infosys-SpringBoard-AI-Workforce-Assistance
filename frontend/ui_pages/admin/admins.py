@@ -28,9 +28,10 @@ def render(api):
                 c1, c2, c3 = st.columns([3, 4, 1])
                 c1.markdown(f"**{admin['name']}**")
                 c2.caption(f"{admin['email']} · {admin['role']}")
-                if c3.button("Delete", key=f"delete_admin_{admin['id']}"):
+                if c3.button("Deactivate", key=f"delete_admin_{admin['id']}"):
                     try:
                         api.delete_admin(admin["id"])
+                        st.success("Administrator deactivated.")
                         st.rerun()
                     except Exception as exc:
                         st.error(str(exc))
