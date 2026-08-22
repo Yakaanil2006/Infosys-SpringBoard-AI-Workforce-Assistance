@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import get_settings
 from app.core.database import enable_pgvector
-from app.routers import auth, assistant, documents, team, powerbi, recommendations, datasets
+from app.routers import auth, assistant, documents, team, powerbi, recommendations, datasets, analytics
 from app.models import User, Document, DocumentChunk, TeamMember, PowerBIDashboard, Recommendation, ChatSession, ChatMessage, Dataset, DatasetRow
 
 settings = get_settings()
@@ -39,3 +39,4 @@ app.include_router(team.router)
 app.include_router(powerbi.router)
 app.include_router(recommendations.router)
 app.include_router(datasets.router)
+app.include_router(analytics.router)

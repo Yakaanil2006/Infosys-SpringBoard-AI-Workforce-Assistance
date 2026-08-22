@@ -163,11 +163,6 @@ h3 {
     transition: all 0.15s ease;
 }
 
-[data-testid="stSidebar"] .stRadio label:hover {
-    background: #1F2937 !important;
-    border-left-color: #60A5FA !important;
-}
-
 [data-testid="stSidebar"] .stRadio label p {
     color: #F9FAFB !important;
 }
@@ -821,16 +816,270 @@ hr {
 }
 
 </style>
+<style>
+/* =========================================================
+   WORKFORCE EDITORIAL COLOR SYSTEM
+   ========================================================= */
+:root {
+    --paper: #edf1f4;
+    --surface: #ffffff;
+    --surface-strong: #ffffff;
+    --ink: #20252d;
+    --muted: #68717c;
+    --line: #d9dee4;
+    --forest: #292d35;
+    --forest-soft: #464d59;
+    --coral: #d8674f;
+    --coral-dark: #b9523d;
+    --teal: #277c82;
+    --mustard: #d39a3b;
+}
+
+.stApp, .main { background: var(--paper) !important; color: var(--ink) !important; }
+.stApp p, .stApp label, .stApp span, [data-testid="stMarkdownContainer"] p,
+h1, h2, h3, h4, h5, h6 { color: var(--ink) !important; }
+
+[data-testid="stSidebar"] {
+    background: var(--forest) !important;
+    border-right: 0 !important;
+    box-shadow: 8px 0 24px rgba(23, 63, 59, .10) !important;
+}
+[data-testid="stSidebar"] * { color: #f7f4ee !important; }
+[data-testid="stSidebar"] [data-testid="stCaptionContainer"] { color: #aeb6c8 !important; }
+[data-testid="stSidebar"] hr { border-color: rgba(247,244,238,.16) !important; }
+
+.awa-brand { padding: 8px 5px 24px !important; }
+[data-testid="stSidebar"] .awa-brand-mark {
+    background: var(--coral) !important;
+    color: #fffaf2 !important;
+    border-radius: 10px !important;
+    box-shadow: 4px 4px 0 rgba(195,139,47,.35);
+}
+[data-testid="stSidebar"] .awa-brand-title {
+    color: #fffaf2 !important;
+    letter-spacing: .02em;
+}
+[data-testid="stSidebar"] .awa-brand-sub { color: #aeb6c8 !important; }
+.nav-group {
+    color: #aeb6c8 !important;
+    font-size: 10px !important;
+    font-weight: 800 !important;
+    letter-spacing: .14em !important;
+    margin: 20px 0 7px !important;
+    text-transform: uppercase !important;
+}
+.admin-nav-group { color: #e7b86a !important; }
+
+[data-testid="stSidebar"] .stRadio label {
+    border-left: 3px solid transparent !important;
+    border-radius: 8px !important;
+    margin: 2px 0 !important;
+    padding: 10px 12px !important;
+    transition: background .18s ease, border-color .18s ease, transform .18s ease;
+}
+[data-testid="stSidebar"] .stRadio label:has(input:checked) {
+    background: var(--coral) !important;
+    border-left-color: #f8d49d !important;
+    box-shadow: 0 5px 12px rgba(0,0,0,.12);
+}
+[data-testid="stSidebar"] .stRadio label p,
+[data-testid="stSidebar"] .stRadio label span { color: #fffaf2 !important; font-weight: 650 !important; }
+
+[data-testid="stSidebar"] .stButton > button {
+    width: 100% !important;
+    min-height: 42px !important;
+    justify-content: flex-start !important;
+    padding: 8px 14px !important;
+    margin: 2px 0 !important;
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    border-radius: 8px !important;
+    color: #f7f4ee !important;
+    box-shadow: none !important;
+    text-align: left !important;
+}
+[data-testid="stSidebar"] .stButton > button > div {
+    width: 100% !important;
+    justify-content: flex-start !important;
+}
+[data-testid="stSidebar"] .stButton > button p,
+[data-testid="stSidebar"] .stButton > button span {
+    color: #f7f4ee !important;
+    font-weight: 650 !important;
+    text-align: left !important;
+}
+[data-testid="stSidebar"] .stButton > button p::before {
+    content: "○";
+    display: inline-block;
+    width: 24px;
+    color: #566176 !important;
+    font-size: 18px;
+    line-height: 1;
+    vertical-align: -1px;
+}
+[data-testid="stSidebar"] .stButton > button:hover {
+    background: transparent !important;
+    border-color: transparent !important;
+    transform: none !important;
+}
+[data-testid="stSidebar"] .stButton > button[kind="primary"] {
+    background: transparent !important;
+    border-color: transparent !important;
+    border-left: 1px solid transparent !important;
+    color: #fffaf2 !important;
+    box-shadow: none !important;
+}
+[data-testid="stSidebar"] .stButton > button[kind="primary"] p,
+[data-testid="stSidebar"] .stButton > button[kind="primary"] span {
+    color: #fffaf2 !important;
+}
+[data-testid="stSidebar"] .stButton > button[kind="primary"] p::before {
+    content: "○";
+    color: #566176 !important;
+    font-size: 18px;
+}
+
+.stButton > button, .stDownloadButton > button {
+    background: var(--surface-strong) !important;
+    color: var(--forest) !important;
+    border: 1px solid var(--line) !important;
+    border-radius: 8px !important;
+}
+.stButton > button:hover, .stDownloadButton > button:hover {
+    background: #f7e7d5 !important;
+    border-color: var(--coral) !important;
+    color: var(--forest) !important;
+}
+.stButton > button[kind="primary"], button[kind="primary"] {
+    background: var(--coral) !important;
+    border-color: var(--coral) !important;
+    color: #fffaf2 !important;
+}
+.stButton > button[kind="primary"] p, .stButton > button[kind="primary"] span,
+button[kind="primary"] p, button[kind="primary"] span { color: #fffaf2 !important; }
+.stButton > button[kind="primary"]:hover { background: var(--coral-dark) !important; border-color: var(--coral-dark) !important; }
+
+.hero, .card, div[data-testid="stMetric"], div[data-testid="stExpander"],
+.chat-page-header, [data-testid="stChatMessage"] {
+    background: var(--surface) !important;
+    border-color: var(--line) !important;
+    box-shadow: 0 8px 24px rgba(70, 53, 30, .06) !important;
+}
+.hero { border-top: 5px solid var(--coral) !important; border-radius: 0 0 12px 12px !important; }
+.hero h1 { color: var(--forest) !important; }
+.hero p, .card-copy, .kicker { color: var(--muted) !important; }
+.eyebrow { color: var(--teal) !important; }
+.section-label { color: var(--forest-soft) !important; }
+.card-title { color: var(--forest) !important; }
+
+.stTextInput input, .stTextArea textarea, .stNumberInput input,
+.stSelectbox [data-baseweb="select"] > div, .stMultiSelect [data-baseweb="select"] > div {
+    background: var(--surface-strong) !important;
+    color: var(--ink) !important;
+    border-color: var(--line) !important;
+    border-radius: 8px !important;
+}
+.stTextInput input:focus, .stTextArea textarea:focus { border-color: var(--teal) !important; box-shadow: 0 0 0 1px var(--teal) !important; }
+.stTextInput input::placeholder, .stTextArea textarea::placeholder {
+    text-align: center !important;
+}
+.stFileUploader section { background: #f8f1e7 !important; border-color: var(--mustard) !important; border-radius: 8px !important; }
+div[data-testid="stMetric"] { border-top: 3px solid var(--teal) !important; border-radius: 8px !important; }
+div[data-testid="stMetricValue"] { color: var(--forest) !important; }
+.admin-banner { background: var(--forest) !important; border-left-color: var(--coral) !important; border-radius: 8px !important; }
+.source { background: #e7f0eb !important; border-left-color: var(--teal) !important; color: var(--forest) !important; }
+a { color: var(--teal) !important; }
+hr { border-color: var(--line) !important; }
+.footer { color: var(--muted) !important; border-color: var(--line) !important; }
+
+/* Keep controls visually stable when the pointer moves over them. */
+.stButton > button:hover,
+.stDownloadButton > button:hover,
+div[data-testid="stHorizontalBlock"] .stButton > button:hover {
+    background: var(--surface-strong) !important;
+    border-color: var(--line) !important;
+    color: var(--ink) !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+.stButton > button[kind="primary"]:hover,
+button[kind="primary"]:hover {
+    background: var(--coral) !important;
+    border-color: var(--coral) !important;
+    color: #fffaf2 !important;
+}
+[data-testid="stSidebar"] .stButton > button:hover {
+    background: transparent !important;
+    border-color: transparent !important;
+    color: #f7f4ee !important;
+}
+[data-testid="stSidebar"] .stButton > button[kind="primary"]:hover {
+    background: transparent !important;
+    border-color: transparent !important;
+    border-left-color: transparent !important;
+    color: #f7f4ee !important;
+}
+[data-testid="stSidebar"] button[data-testid="stBaseButton-secondary"]:hover,
+[data-testid="stSidebar"] button[data-testid="stBaseButton-secondary"]:focus,
+[data-testid="stSidebar"] button[data-testid="stBaseButton-secondary"]:active {
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+[data-testid="stSidebar"] button[data-testid="stBaseButton-primary"]:hover,
+[data-testid="stSidebar"] button[data-testid="stBaseButton-primary"]:focus,
+[data-testid="stSidebar"] button[data-testid="stBaseButton-primary"]:active {
+    background: transparent !important;
+    border-color: transparent !important;
+    border-left-color: transparent !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+/* Centered administrator sign-in controls */
+div[data-testid="stForm"] {
+    max-width: 520px !important;
+    margin: 0 auto !important;
+}
+div[data-testid="stForm"] input {
+    text-align: center !important;
+}
+div[data-testid="stForm"] input::placeholder {
+    text-align: center !important;
+}
+div[data-testid="stForm"] label {
+    text-align: center !important;
+}
+div[data-testid="stForm"] [data-testid="InputInstructions"],
+div[data-testid="stForm"] [data-testid="InputInstructions"] * {
+    display: none !important;
+}
+div[data-testid="stForm"] input[type="password"] {
+    padding-right: 48px !important;
+}
+
+@media (max-width: 900px) {
+    .block-container { padding: 20px 18px 40px !important; }
+    .hero { padding: 28px !important; }
+}
+</style>
 """,
     unsafe_allow_html=True,
 )
 
 
 # ============================================================
-# AUTHENTICATION
+# PUBLIC LANDING PAGE / AUTHENTICATION
 # ============================================================
 
 if not is_authenticated():
+    if st.session_state.page == "Home":
+        from ui_pages.home_new import render
+
+        render(api)
+        st.stop()
+
     from ui_pages.login import render_login
 
     render_login(api)
@@ -863,56 +1112,53 @@ with st.sidebar:
     st.divider()
 
     # --------------------------------------------------------
-    # WORKSPACE
+    # GROUPED NAVIGATION
     # --------------------------------------------------------
 
-    st.caption("WORKSPACE")
-
-    public_pages = [
-        ("Home", "Home"),
-        ("AI Assistant", "AI Assistant"),
-        ("Power BI", "Power BI"),
-        ("Data Viewer", "Data Viewer"),
-    ]
-
-    # --------------------------------------------------------
-    # ADMINISTRATION
-    # --------------------------------------------------------
-
-    if is_admin():
-
-        st.caption("ADMINISTRATION")
-
-        public_pages += [
-            ("Admin Overview", "Admin Overview"),
-            ("Admin Management", "Admin Management"),
-            ("Team Members", "Team Members"),
-            ("Documents", "Documents"),
-            ("Power BI Settings", "Power BI Settings"),
-            ("Recommendations", "Recommendations"),
-        ]
-
-    # --------------------------------------------------------
-    # NAVIGATION
-    # --------------------------------------------------------
+    for state_key in list(st.session_state):
+        if state_key.startswith("navigation_group_") or state_key == "_navigation_values":
+            del st.session_state[state_key]
 
     current = st.session_state.page
-
-    labels = [
-        item[0]
-        for item in public_pages
+    navigation_groups = [
+        ("Administration", [("Home", "Home")]),
+        ("Admin Workspace", [
+            ("AI Assistant", "AI Assistant"),
+            ("Decision Assistant", "Decision Assistant"),
+            ("Recommendations", "Recommendations"),
+            ("Power BI", "Power BI"),
+            ("Data Viewer", "Data Viewer"),
+            ("Admin Overview", "Admin Overview"),
+            ("Team Members", "Team Members"),
+            ("Documents", "Documents"),
+            ("Admin Management", "Admin Management"),
+            ("Power BI Settings", "Power BI Settings"),
+        ]),
     ]
 
-    selected = st.radio(
-        "Navigation",
-        labels,
-        index=(
-            labels.index(current)
-            if current in labels
-            else 0
-        ),
-        label_visibility="collapsed",
-    )
+    if not is_admin():
+        navigation_groups = navigation_groups[:1]
+
+    public_pages = [item for _, items in navigation_groups for item in items]
+    selected = current
+
+    for group_index, (group_name, items) in enumerate(navigation_groups):
+        if group_name == "Settings":
+            st.divider()
+        group_class = "admin-nav-group" if group_name == "Administration" else ""
+        st.markdown(
+            f"<div class='nav-group {group_class}'>{group_name}</div>",
+            unsafe_allow_html=True,
+        )
+        for item_index, (label, page_name) in enumerate(items):
+            if st.button(
+                label,
+                key=f"navigation_{group_index}_{item_index}",
+                type="primary" if current == page_name else "secondary",
+                width="stretch",
+            ):
+                selected = page_name
+                current = page_name
 
     st.session_state.page = selected
 
@@ -985,6 +1231,7 @@ admin_pages = {
     "Documents",
     "Power BI Settings",
     "Recommendations",
+    "Decision Assistant",
 }
 
 if is_admin() and selected_page in admin_pages:
@@ -1007,7 +1254,7 @@ if is_admin() and selected_page in admin_pages:
 
 if selected_page == "Home":
 
-    from ui_pages.home import render
+    from ui_pages.home_new import render
 
 elif selected_page == "AI Assistant":
 
@@ -1044,6 +1291,10 @@ elif selected_page == "Power BI Settings":
 elif selected_page == "Recommendations":
 
     from ui_pages.admin.recommendations import render
+
+elif selected_page == "Decision Assistant":
+
+    from ui_pages.admin.decision_assistant import render
 
 
 # ============================================================

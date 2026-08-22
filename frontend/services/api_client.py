@@ -40,15 +40,28 @@ class APIClient:
     def suggestions(self):
         return self.request("GET", "/api/assistant/suggestions").json()
 
-    def chat(self, question):
+    def chat(self, question, dataset_name=None, document_filename=None):
         return self.request(
             "POST",
             "/api/assistant/chat",
-            json={"question": question},
+            json={
+                "question": question,
+                "dataset_name": dataset_name,
+                "document_filename": document_filename,
+            },
         ).json()
 
     def documents(self):
         return self.request("GET", "/api/admin/documents").json()
+
+    def analytics_dashboard(self):
+        return self.request("GET", "/api/analytics/dashboard").json()
+
+    def analytics_documents(self):
+        return self.request("GET", "/api/analytics/documents").json()
+
+    def analytics_recommendations(self):
+        return self.request("GET", "/api/analytics/recommendations").json()
 
     def upload_document(self, filename, content):
         return self.request(
@@ -72,6 +85,11 @@ class APIClient:
 
     def delete_admin(self, user_id):
         return self.request("DELETE", f"/api/auth/admins/{user_id}").json()
+
+    def update_admin(self, admin_id, payload):
+        return self.request(
+            "PUT", f"/api/auth/admins/{admin_id}", json=payload
+        ).json()
 
     def team(self):
         return self.request("GET", "/api/team").json()
@@ -127,6 +145,13 @@ class APIClient:
             "POST",
             f"/api/admin/recommendations/{recommendation_id}/ask",
             json={"question": question},
+        ).json()
+
+    def ask_decision_assistant(self, question, dataset_name):
+        return self.request(
+            "POST",
+            "/api/admin/recommendations/decision-assistant",
+            json={"question": question, "dataset_name": dataset_name},
         ).json()
 
     def dataset(self, page=1, limit=50):

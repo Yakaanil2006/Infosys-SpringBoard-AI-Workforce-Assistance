@@ -28,11 +28,16 @@ class AnalyzeRequest(BaseModel):
 
 
 class UpdateRecommendationRequest(BaseModel):
-    status: str = Field(pattern="^(new|approved|dismissed|in_review)$")
+    status: str = Field(pattern="^(new|in_progress|approved|completed|dismissed|in_review)$")
 
 
 class AskRecommendationRequest(BaseModel):
     question: str = Field(min_length=1, max_length=2000)
+
+
+class DecisionAssistantRequest(BaseModel):
+    question: str = Field(min_length=1, max_length=2000)
+    dataset_name: str = Field(min_length=1, max_length=255)
 
 
 @router.get("/datasets")
@@ -41,6 +46,34 @@ def datasets(
     _: User = Depends(require_admin),
 ):
     return available_datasets(db)
+
+
+@router.post("/decision-assistant")
+def decision_assistant(
+    payload: DecisionAssistantRequest,
+    db: Session = Depends(get_db),
+    _: User = Depends(require_admin),
+):
+    try:
+        analysis = analyze_dataset(db, payload.dataset_name)
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+
+    prompt_context = (
+        f"Selected dataset: {payload.dataset_name}\n"
+        "Verified Python analysis of the selected dataset:\n"
+        f"{json.dumps(analysis, indent=2, default=str)}"
+    )
+    try:
+        answer = generate_answer(payload.question, prompt_context)
+    except Exception as exc:
+        raise HTTPException(status_code=503, detail=f"Decision assistant unavailable: {exc}")
+    return {
+        "question": payload.question,
+        "dataset": payload.dataset_name,
+        "answer": answer,
+        "analysis": analysis,
+    }
 
 
 @router.post("/analyze")
@@ -112,9 +145,9 @@ def update_recommendation(
     if not record:
         raise HTTPException(status_code=404, detail="Recommendation not found")
     if payload.status == "dismissed":
-        db.delete(record)
-        db.commit()
-        return {"message": "Recommendation dismissed and deleted", "id": recommendation_id}
+        from datetime import datetime, timezone
+        record.dismissed = True
+        record.dismissed_at = datetime.now(timezone.utc)
 
     record.status = payload.status
     db.commit()

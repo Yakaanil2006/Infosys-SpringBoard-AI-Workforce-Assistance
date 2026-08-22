@@ -8,6 +8,7 @@ from app.rag.embeddings import embed_texts
 from app.rag.loader import extract_document
 from app.rag.retriever import search_chunks
 from app.services.groq_service import generate_answer
+from app.services.recommendation_service import analyze_dataset
 
 settings = get_settings()
 
@@ -46,12 +47,18 @@ def ingest_document(
     db.commit()
 
 
-def answer_question(db: Session, user_id: str, question: str):
+def answer_question(
+    db: Session,
+    user_id: str,
+    question: str,
+    dataset_name: str | None = None,
+    document_filename: str | None = None,
+):
     session = ChatSession(user_id=user_id)
     db.add(session)
     db.flush()
 
-    chunks = search_chunks(db, question, settings.top_k)
+    chunks = search_chunks(db, question, settings.top_k, document_filename)
 
     context_parts = []
     sources = []
@@ -70,6 +77,13 @@ def answer_question(db: Session, user_id: str, question: str):
         })
 
     context = "\n\n---\n\n".join(context_parts)
+    if dataset_name:
+        try:
+            analysis = analyze_dataset(db, dataset_name)
+        except ValueError:
+            analysis = None
+        if analysis:
+            context += "\n\n---\n\n[Selected dataset analysis]\n" + json.dumps(analysis, default=str)
     answer = generate_answer(question, context or "No relevant project documents were found.")
 
     db.add(ChatMessage(

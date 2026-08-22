@@ -24,13 +24,18 @@ def render_login(api):
                 return
             try:
                 result = api.login(email, password)
-                st.session_state.token = result["access_token"]
-                api.token = result["access_token"]
-                st.session_state.user = api.me()
+                access_token = result["access_token"]
+                authenticated_api = type(api)(api.base_url, access_token)
+                user = authenticated_api.me()
+                if user.get("role") != "admin":
+                    raise RuntimeError("This login is restricted to administrator accounts.")
+
+                st.session_state.token = access_token
+                st.session_state.user = user
                 st.session_state.page = "Home"
                 st.rerun()
             except Exception as exc:
-                st.error(str(exc))
+                st.error(f"Administrator sign-in failed: {exc}")
 
         st.markdown(
             "<div class='footer'>Administrator access only · admin@ai.com</div>",

@@ -14,11 +14,15 @@ class Document(Base):
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     filename: Mapped[str] = mapped_column(String(255))
+    description: Mapped[str] = mapped_column(Text, default="")
     file_type: Mapped[str] = mapped_column(String(30))
     uploaded_by: Mapped[str] = mapped_column(ForeignKey("users.id"))
-    status: Mapped[str] = mapped_column(String(30), default="indexed")
+    status: Mapped[str] = mapped_column(String(30), default="processing")  # processing, indexed, failed
+    processing_status: Mapped[str] = mapped_column(String(255), default="")
     chunk_count: Mapped[int] = mapped_column(Integer, default=0)
+    file_path: Mapped[str] = mapped_column(String(500), default="")
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
 
     chunks = relationship("DocumentChunk", back_populates="document", cascade="all, delete-orphan")
 

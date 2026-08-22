@@ -324,6 +324,8 @@ def serialize_recommendation(record: Recommendation) -> dict[str, Any]:
         "reasoning": record.reasoning,
         "priority": record.priority,
         "status": record.status,
+        "dismissed": record.dismissed,
+        "dismissed_at": record.dismissed_at,
         "expected_impact": record.expected_impact,
         "dataset_name": record.dataset_name,
         "created_at": record.created_at,

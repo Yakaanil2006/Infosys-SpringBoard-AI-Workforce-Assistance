@@ -4,6 +4,8 @@ from pydantic import BaseModel
 class ChatRequest(BaseModel):
     question: str
     session_id: str | None = None
+    dataset_name: str | None = None
+    document_filename: str | None = None
 
 
 class Source(BaseModel):

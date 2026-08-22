@@ -16,7 +16,13 @@ def chat(
     db: Session = Depends(get_db),
     user: User = Depends(get_current_user),
 ):
-    answer, session_id, sources = answer_question(db, user.id, payload.question)
+    answer, session_id, sources = answer_question(
+        db,
+        user.id,
+        payload.question,
+        payload.dataset_name,
+        payload.document_filename,
+    )
     return {
         "answer": answer,
         "session_id": session_id,

@@ -13,6 +13,53 @@ def render(api):
     st.title("AI Assistant")
     st.markdown("<div class='kicker'>Project-grounded answers powered by retrieval-augmented generation.</div>", unsafe_allow_html=True)
 
+    try:
+        datasets = api.datasets()
+    except Exception as exc:
+        st.warning(f"Unable to load datasets: {exc}")
+        datasets = []
+
+    dataset_options = {"No dataset selected": None}
+    dataset_options.update({
+        item["name"]: item["name"]
+        for item in datasets
+    })
+    selected_dataset = st.selectbox(
+        "Select a dataset (optional)",
+        options=list(dataset_options),
+        format_func=lambda name: (
+            "No dataset selected"
+            if dataset_options[name] is None
+            else f"{name} · {next(item['row_count'] for item in datasets if item['name'] == name):,} rows"
+        ),
+    )
+    selected_dataset_name = dataset_options[selected_dataset]
+
+    try:
+        documents = [
+            item for item in api.documents()
+            if item.get("status") == "indexed"
+        ]
+    except Exception as exc:
+        st.warning(f"Unable to load uploaded files: {exc}")
+        documents = []
+
+    document_options = {"All uploaded files": None}
+    document_options.update({
+        item["filename"]: item["filename"]
+        for item in documents
+    })
+    selected_document = st.selectbox(
+        "Select an uploaded file (optional)",
+        options=list(document_options),
+        format_func=lambda name: (
+            "All uploaded files"
+            if document_options[name] is None
+            else f"{name} · indexed"
+        ),
+    )
+    selected_document_name = document_options[selected_document]
+
     st.markdown('<div class="section"><div class="section-label">Suggested questions</div></div>', unsafe_allow_html=True)
     cols = st.columns(3)
     for i, question in enumerate(SUGGESTIONS):
@@ -58,7 +105,11 @@ def render(api):
         with st.chat_message("assistant"):
             with st.spinner("Retrieving context and generating answer..."):
                 try:
-                    result = api.chat(question)
+                    result = api.chat(
+                        question,
+                        selected_dataset_name,
+                        selected_document_name,
+                    )
                     answer = result["answer"]
                     source_names = [
                         f"{s['filename']}" + (f" · p.{s['page']}" if s.get("page") else "")
