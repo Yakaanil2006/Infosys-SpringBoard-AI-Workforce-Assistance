@@ -111,10 +111,30 @@ def update_recommendation(
     record = db.get(Recommendation, recommendation_id)
     if not record:
         raise HTTPException(status_code=404, detail="Recommendation not found")
+    if payload.status == "dismissed":
+        db.delete(record)
+        db.commit()
+        return {"message": "Recommendation dismissed and deleted", "id": recommendation_id}
+
     record.status = payload.status
     db.commit()
     db.refresh(record)
     return serialize_recommendation(record)
+
+
+@router.delete("/{recommendation_id}")
+def delete_recommendation(
+    recommendation_id: str,
+    db: Session = Depends(get_db),
+    _: User = Depends(require_admin),
+):
+    record = db.get(Recommendation, recommendation_id)
+    if not record:
+        raise HTTPException(status_code=404, detail="Recommendation not found")
+
+    db.delete(record)
+    db.commit()
+    return {"message": "Recommendation deleted", "id": recommendation_id}
 
 
 @router.post("/{recommendation_id}/ask")

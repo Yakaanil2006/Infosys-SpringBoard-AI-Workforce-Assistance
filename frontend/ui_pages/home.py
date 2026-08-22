@@ -3,7 +3,7 @@ import streamlit as st
 def render(api):
     st.markdown("""
     <div class="hero">
-        <div class="eyebrow">AI WORKFORCE ASSISTANT</div>
+        <div class="eyebrow">AI-POWERED WORKFORCE ANALYTICS &amp; TALENT INTELLIGENCE DASHBOARD</div>
         <h1>Project intelligence, analytics and decisions in one workspace.</h1>
         <p>
             A secure knowledge and analytics platform that combines document-grounded
@@ -88,4 +88,4 @@ Top 5 chunks → Groq → Answer + Sources""", language="text")
     r2.markdown("**Supporting documents**  \nPolicies, project notes and knowledge sources.")
     r3.markdown("**Analytics**  \nPower BI dashboards and dataset views.")
 
-    st.markdown('<div class="footer">AI Workforce Assistant · admin@ai.com</div>', unsafe_allow_html=True)
+    st.markdown('<div class="footer">AI-Powered Workforce Analytics &amp; Talent Intelligence Dashboard · admin@ai.com</div>', unsafe_allow_html=True)

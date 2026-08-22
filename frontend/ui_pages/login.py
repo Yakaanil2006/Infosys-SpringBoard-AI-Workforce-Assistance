@@ -8,7 +8,7 @@ def render_login(api):
         st.markdown("""
         <div class="hero" style="padding:36px;">
             <div class="eyebrow">SECURE ACCESS</div>
-            <h1>AI Workforce Assistant</h1>
+            <h1>AI-Powered Workforce Analytics &amp; Talent Intelligence Dashboard</h1>
             <p>Sign in to access the project intelligence workspace and administration tools.</p>
         </div>
         """, unsafe_allow_html=True)

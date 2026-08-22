@@ -9,7 +9,7 @@ from app.models import User, Document, DocumentChunk, TeamMember, PowerBIDashboa
 settings = get_settings()
 
 app = FastAPI(
-    title="AI Workforce Assistant API",
+    title="AI-Powered Workforce Analytics & Talent Intelligence Dashboard API",
     version="1.0.0",
 )
 

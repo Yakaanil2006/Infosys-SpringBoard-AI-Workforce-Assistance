@@ -5,7 +5,7 @@ settings = get_settings()
 client = Groq(api_key=settings.groq_api_key)
 
 
-SYSTEM_PROMPT = """You are AI Workforce Assistant.
+SYSTEM_PROMPT = """You are the AI-Powered Workforce Analytics & Talent Intelligence Dashboard.
 
 Answer questions using the supplied project context.
 

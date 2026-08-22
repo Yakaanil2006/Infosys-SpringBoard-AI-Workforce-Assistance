@@ -24,7 +24,7 @@ API_BASE_URL = os.getenv(
 # ============================================================
 
 st.set_page_config(
-    page_title="AI Workforce Assistant",
+    page_title="AI-Powered Workforce Analytics & Talent Intelligence Dashboard",
     page_icon="◈",
     layout="wide",
     initial_sidebar_state="expanded",

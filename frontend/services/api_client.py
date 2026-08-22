@@ -117,6 +117,11 @@ class APIClient:
             json={"status": status},
         ).json()
 
+    def delete_recommendation(self, recommendation_id):
+        return self.request(
+            "DELETE", f"/api/admin/recommendations/{recommendation_id}"
+        ).json()
+
     def ask_recommendation(self, recommendation_id, question):
         return self.request(
             "POST",

@@ -123,7 +123,8 @@ def render(api):
                     st.error(str(exc))
             if b2.button("Dismiss", key=f"dismiss_{item['id']}"):
                 try:
-                    api.update_recommendation(item["id"], "dismissed")
+                    api.delete_recommendation(item["id"])
+                    st.success("Recommendation dismissed.")
                     st.rerun()
                 except Exception as exc:
                     st.error(str(exc))

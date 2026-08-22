@@ -1,6 +1,6 @@
-# AI Workforce Assistant — Deployment & Setup Guide
+# AI-Powered Workforce Analytics & Talent Intelligence Dashboard — Deployment & Setup Guide
 
-A full-stack AI Workforce Assistant platform built with **Streamlit, FastAPI, Neon PostgreSQL, pgvector, Groq, JWT authentication, and RAG**.
+A full-stack workforce analytics and talent intelligence platform built with **Streamlit, FastAPI, Neon PostgreSQL, pgvector, Groq, JWT authentication, and RAG**.
 
 ---
 
@@ -884,7 +884,7 @@ git add .
 Commit:
 
 ```powershell
-git commit -m "Update AI Workforce Assistant"
+git commit -m "Update AI-Powered Workforce Analytics Dashboard"
 ```
 
 Push:
