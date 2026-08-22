@@ -36,10 +36,7 @@ def render(api):
     selected_dataset_name = dataset_options[selected_dataset]
 
     try:
-        documents = [
-            item for item in api.documents()
-            if item.get("status") == "indexed"
-        ]
+        documents = api.assistant_documents()
     except Exception as exc:
         st.warning(f"Unable to load uploaded files: {exc}")
         documents = []

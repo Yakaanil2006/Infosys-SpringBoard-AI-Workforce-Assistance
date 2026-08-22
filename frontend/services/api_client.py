@@ -40,6 +40,9 @@ class APIClient:
     def suggestions(self):
         return self.request("GET", "/api/assistant/suggestions").json()
 
+    def assistant_documents(self):
+        return self.request("GET", "/api/assistant/documents").json()
+
     def chat(self, question, dataset_name=None, document_filename=None):
         return self.request(
             "POST",

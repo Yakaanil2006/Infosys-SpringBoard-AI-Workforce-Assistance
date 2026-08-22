@@ -1,13 +1,36 @@
 from fastapi import APIRouter, Depends
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
 from app.core.security import get_current_user
+from app.models.document import Document
 from app.models.user import User
 from app.schemas.chat import ChatRequest, ChatResponse
 from app.services.rag_service import answer_question
 
 router = APIRouter(prefix="/api/assistant", tags=["assistant"])
+
+
+@router.get("/documents")
+def indexed_documents(
+    db: Session = Depends(get_db),
+    _: User = Depends(get_current_user),
+):
+    """List indexed uploaded files available to the assistant."""
+    documents = db.scalars(
+        select(Document)
+        .where(Document.status == "indexed")
+        .order_by(Document.created_at.desc())
+    ).all()
+    return [
+        {
+            "filename": document.filename,
+            "chunk_count": document.chunk_count,
+            "file_type": document.file_type,
+        }
+        for document in documents
+    ]
 
 
 @router.post("/chat", response_model=ChatResponse)
